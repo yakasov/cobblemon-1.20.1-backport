@@ -2,14 +2,7 @@
   "multipart": [
     {
       "when": {
-        "AND": [
-          {
-            "age": 0
-          },
-          {
-            "rooted": false
-          }
-        ]
+        "age": "0"
       },
       "apply": {
         "model": "cobblemon:block/berries/planted",
@@ -18,62 +11,16 @@
     },
     {
       "when": {
-        "AND": [
-          {
-            "age": 0
-          },
-          {
-            "rooted": true
-          }
-        ]
+        "age": "1"
       },
       "apply": {
-        "model": "cobblemon:block/berries/planted_bound",
+        "model": "cobblemon:block/berries/sprout",
         "uvlock": false
       }
     },
     {
       "when": {
-        "AND": [
-          {
-            "age": 1
-          },
-          {
-            "rooted": false
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_sprout",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 1
-          },
-          {
-            "rooted": true
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_sprout",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 2
-          },
-          {
-            "rooted": false
-          }
-        ]
+        "age": "2"
       },
       "apply": {
         "model": "cobblemon:block/berries/petaya_young",
@@ -82,30 +29,7 @@
     },
     {
       "when": {
-        "AND": [
-          {
-            "age": 2
-          },
-          {
-            "rooted": true
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_young",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 3
-          },
-          {
-            "rooted": false
-          }
-        ]
+        "age": "3"
       },
       "apply": {
         "model": "cobblemon:block/berries/petaya_mature",
@@ -114,14 +38,7 @@
     },
     {
       "when": {
-        "AND": [
-          {
-            "age": 3
-          },
-          {
-            "rooted": true
-          }
-        ]
+        "age": "4"
       },
       "apply": {
         "model": "cobblemon:block/berries/petaya_mature",
@@ -130,62 +47,7 @@
     },
     {
       "when": {
-        "AND": [
-          {
-            "age": 4
-          },
-          {
-            "rooted": false
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_mature",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 4
-          },
-          {
-            "rooted": true
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_mature",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 5
-          },
-          {
-            "rooted": false
-          }
-        ]
-      },
-      "apply": {
-        "model": "cobblemon:block/berries/petaya_mature",
-        "uvlock": false
-      }
-    },
-    {
-      "when": {
-        "AND": [
-          {
-            "age": 5
-          },
-          {
-            "rooted": true
-          }
-        ]
+        "age": "5"
       },
       "apply": {
         "model": "cobblemon:block/berries/petaya_mature",
