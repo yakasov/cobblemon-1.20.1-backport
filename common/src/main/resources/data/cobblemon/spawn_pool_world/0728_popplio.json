@@ -11,9 +11,9 @@
             ],
             "type": "pokemon",
             "context": "grounded",
-            "bucket": "ultra-rare",
+            "bucket": "rare",
             "level": "5-32",
-            "weight": 9.0,
+            "weight": 5.0,
             "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
@@ -30,9 +30,9 @@
             ],
             "type": "pokemon",
             "context": "submerged",
-            "bucket": "ultra-rare",
+            "bucket": "rare",
             "level": "5-32",
-            "weight": 9.0,
+            "weight": 5.0,
             "condition": {
                 "canSeeSky": true,
                 "biomes": [
@@ -48,9 +48,9 @@
             ],
             "type": "pokemon",
             "context": "surface",
-            "bucket": "ultra-rare",
+            "bucket": "rare",
             "level": "5-32",
-            "weight": 9.0,
+            "weight": 5.0,
             "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
