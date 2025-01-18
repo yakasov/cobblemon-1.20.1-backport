@@ -17,5 +17,5 @@ This version focuses on bringing the new Pokemon added in the 1.6.0 version of t
 - [ ] Updated mechanics
 - [ ] QoL features
 - [ ] New structures
-- [ ] Balancing
+- [~] Balancing
 - [ ] Fixes
