@@ -46,15 +46,19 @@ object BlockEntityModelRepository : VaryingModelRepository<Entity, BlockEntityMo
             //
             // Refactor this bullshit to not mention pokemon at all, it should be common to anything using animation factories.
             // Even better: move to molang functions, this is ass
-            model.idleAnimations = animations.mapNotNull {
-                val animString = it.asString
-                val anim = animString.substringBefore("(")
-                if (JsonPokemonPoseableModel.ANIMATION_FACTORIES.contains(anim)) {
-                    return@mapNotNull JsonPokemonPoseableModel.ANIMATION_FACTORIES[anim]!!.stateless(model, animString)
-                } else {
-                    null
-                }
-            }.toTypedArray()
+            if (animations == null) {
+                model.idleAnimations = emptyArray();
+            } else {
+                model.idleAnimations = animations.mapNotNull {
+                    val animString = it.asString
+                    val anim = animString.substringBefore("(")
+                    if (JsonPokemonPoseableModel.ANIMATION_FACTORIES.contains(anim)) {
+                        return@mapNotNull JsonPokemonPoseableModel.ANIMATION_FACTORIES[anim]!!.stateless(model, animString)
+                    } else {
+                        null
+                    }
+                }.toTypedArray()
+            }
             model
         }
     }
