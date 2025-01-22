@@ -23,7 +23,8 @@ data class BattleFormat(
     val mod: String = "cobblemon",
     val battleType: BattleType = BattleTypes.SINGLES,
     val ruleSet: Set<String> = setOf(),
-    val gen: Int = 9
+    val gen: Int = 9,
+    val adjustLevel: Int = -1
 ) {
     companion object {
         val GEN_9_SINGLES = BattleFormat(
@@ -46,10 +47,12 @@ data class BattleFormat(
             val battleType = BattleType.loadFromBuffer(buffer)
             val ruleSet = mutableSetOf<String>()
             repeat(times = buffer.readSizedInt(IntSize.U_BYTE)) { ruleSet.add(buffer.readString()) }
+            val adjustLevel = buffer.readSizedInt(IntSize.INT)
             return BattleFormat(
                 mod = mod,
                 battleType = battleType,
-                ruleSet = ruleSet
+                ruleSet = ruleSet,
+                adjustLevel = adjustLevel
             )
         }
     }
@@ -59,6 +62,7 @@ data class BattleFormat(
         battleType.saveToBuffer(buffer)
         buffer.writeSizedInt(IntSize.U_BYTE, ruleSet.size)
         ruleSet.forEach(buffer::writeString)
+        buffer.writeSizedInt(IntSize.INT, adjustLevel)
         return buffer
     }
 

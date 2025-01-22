@@ -13,6 +13,7 @@ import com.cobblemon.mod.common.CobblemonSounds
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle
 import com.cobblemon.mod.common.api.battles.model.actor.BattleActor
 import com.cobblemon.mod.common.api.storage.party.PartyStore
+import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore
 import com.cobblemon.mod.common.battles.actor.PlayerBattleActor
 import com.cobblemon.mod.common.battles.actor.PokemonBattleActor
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
@@ -40,8 +41,30 @@ object BattleBuilder {
         healFirst: Boolean = false,
         partyAccessor: (ServerPlayerEntity) -> PartyStore = { it.party() }
     ): BattleStartResult {
-        val team1 = partyAccessor(player1).toBattleTeam(clone = cloneParties, checkHealth = !healFirst, leadingPokemonPlayer1)
-        val team2 = partyAccessor(player2).toBattleTeam(clone = cloneParties, checkHealth = !healFirst, leadingPokemonPlayer2)
+        // val adjustLevel = battleFormat.adjustLevel
+        val adjustLevel = 50
+        val team1 = partyAccessor(player1).toBattleTeam(clone = cloneParties || adjustLevel > 0, checkHealth = !healFirst, leadingPokemonPlayer1).sortedBy { it.health <= 0 }
+        val team2 = partyAccessor(player2).toBattleTeam(clone = cloneParties || adjustLevel > 0, checkHealth = !healFirst, leadingPokemonPlayer2).sortedBy { it.health <= 0 }
+
+        val battlePartyStores = mutableListOf<PlayerPartyStore>();
+
+        if (adjustLevel > 0) {
+            val tempStoreP1 = PlayerPartyStore(player1.uuid)
+            team1.forEachIndexed { index, it ->
+                it.effectedPokemon.level = adjustLevel
+                it.effectedPokemon.heal()
+                tempStoreP1.set(index, it.effectedPokemon)
+            }
+            battlePartyStores.add(tempStoreP1)
+
+            val tempStoreP2 = PlayerPartyStore(player2.uuid)
+            team2.forEachIndexed { index, it ->
+                it.effectedPokemon.level = adjustLevel
+                it.effectedPokemon.heal()
+                tempStoreP2.set(index, it.effectedPokemon)
+            }
+            battlePartyStores.add(tempStoreP2)
+        }
 
         val player1Actor = PlayerBattleActor(player1.uuid, team1)
         val player2Actor = PlayerBattleActor(player2.uuid, team2)
@@ -49,12 +72,16 @@ object BattleBuilder {
         val errors = ErroredBattleStart()
 
         for ((player, actor) in arrayOf(player1 to player1Actor, player2 to player2Actor)) {
-            if (actor.pokemonList.size < battleFormat.battleType.slotsPerActor) {
+            if (actor.pokemonList.filter { it.health > 0 }.size < battleFormat.battleType.slotsPerActor) {
                 errors.participantErrors[actor] += BattleStartError.insufficientPokemon(
                     player = player,
                     requiredCount = battleFormat.battleType.slotsPerActor,
-                    hadCount = actor.pokemonList.size
+                    hadCount = actor.pokemonList.filter { it.health > 0 }.size
                 )
+            }
+
+            if (actor.pokemonList.any { it.entity?.isBusy == true }) {
+                errors.participantErrors[actor] += BattleStartError.targetIsBusy((player.displayName ?: player.name) as MutableText)
             }
 
             if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {

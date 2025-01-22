@@ -48,15 +48,20 @@ object FossilModelRepository : VaryingModelRepository<Entity, FossilModel>() {
             model.yGrowthPoint = yGrowthPoint
             // Refactor this bullshit to not mention pokemon at all, it should be common to anything using animation factories.
             // Even better: move to molang functions, this is ass
-            model.tankAnimations = animations.mapNotNull {
-                val animString = it.asString
-                val anim = animString.substringBefore("(")
-                if (JsonPokemonPoseableModel.ANIMATION_FACTORIES.contains(anim)) {
-                    return@mapNotNull JsonPokemonPoseableModel.ANIMATION_FACTORIES[anim]!!.stateless(model, animString)
-                } else {
-                    null
-                }
-            }.toTypedArray()
+            if (animations == null) {
+                model.tankAnimations = emptyArray()
+            } else {
+                model.tankAnimations = animations.mapNotNull {
+                    val animString = it.asString
+                    val anim = animString.substringBefore("(")
+                    if (JsonPokemonPoseableModel.ANIMATION_FACTORIES.contains(anim)) {
+                        return@mapNotNull JsonPokemonPoseableModel.ANIMATION_FACTORIES[anim]!!.stateless(model, animString)
+                    } else {
+                        null
+                    }
+                }.toTypedArray()
+            }
+
 
             // borrowed code from JsonPokemonPoseableModel's PoseAdapter Deserializer
             val tankQuirks = (jsonObject.get("quirks")?.asJsonArray ?: JsonArray()).map { json ->
